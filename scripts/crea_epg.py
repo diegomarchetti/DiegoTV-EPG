@@ -26,7 +26,17 @@ SOURCES = [
     ("EPGshare Italia", "https://epgshare01.online/epgshare01/epg_ripper_IT1.xml.gz"),
     ("TvIt", "https://tvit.leicaflorianrobert.dev/epg/list.xml"),
     ("Pluto TV Italia", "https://raw.githubusercontent.com/matthuisman/i.mjh.nz/master/PlutoTV/it.xml.gz"),
+    ("EPGshare Rakuten", "https://epgshare01.online/epgshare01/epg_ripper_RAKUTEN1.xml.gz"),
 ]
+
+# ID equivalenti di canali italiani presenti nel catalogo Rakuten.
+# Questi ID vengono usati solo per cercare il palinsesto; la M3U non cambia.
+RAKUTEN_ALIASES = {
+    "FailArmy.us@Italy": "IT:.Fail.Army.be",
+    "RakutenTVFamilyMovies.es@Italy": "IT:.Family.-.Rakuten.TV.be",
+    "ThePetCollective.us@Italy": "IT:.The.Pet.Collective.be",
+    "FIFAPlus.uk@Italy": "IT:.FIFA+.be",
+}
 USER_AGENT = "DiegoTV-EPG/1.0 (XMLTV guide merger; Python urllib)"
 ID_RE = re.compile(r'\btvg-id="([^"]*)"')
 PLUTO_RE = re.compile(r"^[0-9a-f]{24}$", re.I)
@@ -117,10 +127,10 @@ def freshness(programmes: list[ET.Element], now: datetime) -> tuple[int, int]:
 
 def source_priority(channel_id: str) -> list[str]:
     if PLUTO_RE.fullmatch(channel_id):
-        return ["Pluto TV Italia", "EPGshare Italia", "TvIt"]
+        return ["Pluto TV Italia", "EPGshare Italia", "TvIt", "EPGshare Rakuten"]
     if re.match(r"^[a-z0-9]+(?:-[a-z0-9]+)+$", channel_id):
-        return ["TvIt", "EPGshare Italia", "Pluto TV Italia"]
-    return ["EPGshare Italia", "TvIt", "Pluto TV Italia"]
+        return ["TvIt", "EPGshare Italia", "Pluto TV Italia", "EPGshare Rakuten"]
+    return ["EPGshare Italia", "TvIt", "Pluto TV Italia", "EPGshare Rakuten"]
 
 
 def build(playlist: Path, out: Path, report: Path, overrides: list[tuple[str, Path]] | None = None) -> None:
@@ -139,8 +149,18 @@ def build(playlist: Path, out: Path, report: Path, overrides: list[tuple[str, Pa
                     local = matched[0]
             if local.parent == Path(temp):
                 print(f"Scarico {name}: {url}")
-                get_file(url, local)
-            channels, programmes = parse_xmltv(local, set(selected))
+                try:
+                    get_file(url, local)
+                except Exception as exc:
+                    if name != "EPGshare Rakuten":
+                        raise
+                    print(f"  Avviso: guida Rakuten non disponibile: {exc}")
+                    src_data[name] = ({}, {})
+                    continue
+            required_ids = set(selected)
+            if name == "EPGshare Rakuten":
+                required_ids.update(RAKUTEN_ALIASES.values())
+            channels, programmes = parse_xmltv(local, required_ids)
             print(f"  ID presenti: {len(channels)}; palinsesti per {len(programmes)} ID")
             src_data[name] = (channels, programmes)
 
@@ -154,20 +174,24 @@ def build(playlist: Path, out: Path, report: Path, overrides: list[tuple[str, Pa
         options = []
         for source_name in source_priority(cid):
             channels, programmes = src_data[source_name]
-            ps = programmes.get(cid, [])
+            lookup_id = RAKUTEN_ALIASES.get(cid, cid) if source_name == "EPGshare Rakuten" else cid
+            ps = programmes.get(lookup_id, [])
             fresh, count = freshness(ps, now)
-            options.append((source_name, channels.get(cid), ps, fresh, count))
+            options.append((source_name, channels.get(lookup_id), ps, fresh, count, lookup_id))
         # Prima sorgente con programmi temporalmente validi; non mescola fonti
         # per lo stesso canale: evita palinsesti duplicati o sovrapposti.
         best = next((x for x in options if x[3] > 0), None)
         if best is None:
             best = next((x for x in options if x[4] > 0), None)
         if best:
-            name, channel_node, programmes, fresh, count = best
+            name, channel_node, programmes, fresh, count, lookup_id = best
             if channel_node is None:
                 channel_node = ET.Element("channel", {"id": cid})
                 ET.SubElement(channel_node, "display-name").text = names[0]
-            output_channels.append(copy.deepcopy(channel_node))
+            else:
+                channel_node = copy.deepcopy(channel_node)
+                channel_node.set("id", cid)
+            output_channels.append(channel_node)
             # Rimuove puntuali duplicati all'interno della stessa fonte.
             seen = set()
             added = 0
@@ -177,7 +201,9 @@ def build(playlist: Path, out: Path, report: Path, overrides: list[tuple[str, Pa
                 if key in seen:
                     continue
                 seen.add(key)
-                output_programmes.append(copy.deepcopy(programme))
+                programme_copy = copy.deepcopy(programme)
+                programme_copy.set("channel", cid)
+                output_programmes.append(programme_copy)
                 added += 1
             total_programmes += added
             output_rows.append((", ".join(names), cid, "OK" if fresh else "DATI NON RECENTI", name, added))
