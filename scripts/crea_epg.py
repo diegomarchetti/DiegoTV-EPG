@@ -16,6 +16,7 @@ import gzip
 import re
 import sys
 import tempfile
+import unicodedata
 import urllib.request
 import xml.etree.ElementTree as ET
 from collections import defaultdict
@@ -27,6 +28,7 @@ SOURCES = [
     ("TvIt", "https://tvit.leicaflorianrobert.dev/epg/list.xml"),
     ("Pluto TV Italia", "https://raw.githubusercontent.com/matthuisman/i.mjh.nz/master/PlutoTV/it.xml.gz"),
     ("EPGshare Rakuten", "https://epgshare01.online/epgshare01/epg_ripper_RAKUTEN1.xml.gz"),
+    ("EPG Italia", "https://www.epgitalia.tv/gzip"),
 ]
 
 # ID equivalenti di canali italiani presenti nel catalogo Rakuten.
@@ -96,6 +98,99 @@ def parse_xmltv(path: Path, required_ids: set[str]) -> tuple[dict, dict]:
     return channels, programmes
 
 
+
+def parse_epgitalia_two(path: Path, required_ids: set[str]) -> tuple[dict, dict]:
+    """Estrae solo TV2000 e 7 Gold dalla guida EPG Italia.
+
+    Gli ID XMLTV esterni possono cambiare: seleziona i canali dal nome
+    esposto dalla guida, usando preferibilmente una variante lombarda per 7 Gold.
+    I programmi vengono rinominati agli ID originali della nostra M3U nella
+    fase finale del generatore. Nessun altro canale viene alterato.
+    """
+    targets = {"TV2000.it@SD", "7Gold.it@SD"} & required_ids
+    if not targets:
+        return {}, {}
+
+    def norm(value: str) -> str:
+        value = unicodedata.normalize("NFKD", value or "")
+        value = "".join(c for c in value if not unicodedata.combining(c))
+        return re.sub(r"[^a-z0-9]", "", value.casefold())
+
+    def match_rank(target: str, name: str) -> int:
+        n = norm(name)
+        if target == "TV2000.it@SD":
+            if n in ("tv2000", "tv2000hd"):
+                return 5
+            if n.startswith("tv2000"):
+                return 2
+        elif target == "7Gold.it@SD":
+            if "7gold" in n and "lombardia" in n:
+                return 6
+            if n in ("7gold", "7goldhd", "7goldtv"):
+                return 5
+            if n.startswith(("7gold", "telecity7gold")):
+                return 2
+        return 0
+
+    # I canali XMLTV sono normalmente dichiarati prima dei programmi.
+    raw_candidates: dict[str, tuple[str, int, ET.Element]] = {}
+    by_raw: dict[str, list[ET.Element]] = defaultdict(list)
+    with path.open("rb") as fh:
+        gz = fh.read(2) == b"\x1f\x8b"
+    stream = gzip.open(path, "rb") if gz else path.open("rb")
+    with stream:
+        parser = ET.iterparse(stream, events=("start", "end"))
+        _, root = next(parser)
+        for event, element in parser:
+            if event != "end":
+                continue
+            tag = element.tag.rsplit("}", 1)[-1]
+            if tag == "channel":
+                rawid = element.get("id", "")
+                labels = [n.text or "" for n in element if n.tag.rsplit("}", 1)[-1] == "display-name"]
+                # Fallback sull'ID, ma non fidarsi della sola parola "7".
+                labels.append(rawid)
+                best = (0, "")
+                for target in targets:
+                    rank = max((match_rank(target, label) for label in labels), default=0)
+                    if rank > best[0]:
+                        best = (rank, target)
+                if best[0] and rawid:
+                    raw_candidates[rawid] = (best[1], best[0], copy.deepcopy(element))
+                root.clear()
+            elif tag == "programme":
+                rawid = element.get("channel", "")
+                if rawid in raw_candidates:
+                    by_raw[rawid].append(copy.deepcopy(element))
+                root.clear()
+
+    now = datetime.now(timezone.utc)
+    channels, programmes = {}, {}
+    for target in targets:
+        matches = []
+        for rawid, (mapped, rank, node) in raw_candidates.items():
+            if mapped != target:
+                continue
+            ps = by_raw.get(rawid, [])
+            fresh, count = freshness(ps, now)
+            matches.append((int(fresh > 0), rank, fresh, count, rawid, node, ps))
+        if not matches:
+            print(f"  EPG Italia: nessun ID compatibile trovato per {target}")
+            continue
+        _, rank, fresh, count, rawid, node, ps = max(matches, key=lambda row: row[:4])
+        if fresh == 0:
+            print(f"  EPG Italia: {target} candidato {rawid} senza palinsesto recente")
+            continue
+        node.set("id", target)
+        channels[target] = node
+        programmes[target] = []
+        for item in ps:
+            item.set("channel", target)
+            programmes[target].append(item)
+        print(f"  EPG Italia: {target} <- {rawid} ({fresh} programmi recenti)")
+    return channels, programmes
+
+
 def parse_date(text: str | None) -> datetime | None:
     """Gestisce date XMLTV tipo '20261120130000 +0100'."""
     if not text:
@@ -127,10 +222,10 @@ def freshness(programmes: list[ET.Element], now: datetime) -> tuple[int, int]:
 
 def source_priority(channel_id: str) -> list[str]:
     if PLUTO_RE.fullmatch(channel_id):
-        return ["Pluto TV Italia", "EPGshare Italia", "TvIt", "EPGshare Rakuten"]
+        return ["Pluto TV Italia", "EPGshare Italia", "TvIt", "EPGshare Rakuten", "EPG Italia"]
     if re.match(r"^[a-z0-9]+(?:-[a-z0-9]+)+$", channel_id):
-        return ["TvIt", "EPGshare Italia", "Pluto TV Italia", "EPGshare Rakuten"]
-    return ["EPGshare Italia", "TvIt", "Pluto TV Italia", "EPGshare Rakuten"]
+        return ["TvIt", "EPGshare Italia", "Pluto TV Italia", "EPGshare Rakuten", "EPG Italia"]
+    return ["EPGshare Italia", "TvIt", "Pluto TV Italia", "EPGshare Rakuten", "EPG Italia"]
 
 
 def build(playlist: Path, out: Path, report: Path, overrides: list[tuple[str, Path]] | None = None) -> None:
@@ -152,7 +247,7 @@ def build(playlist: Path, out: Path, report: Path, overrides: list[tuple[str, Pa
                 try:
                     get_file(url, local)
                 except Exception as exc:
-                    if name != "EPGshare Rakuten":
+                    if name not in ("EPGshare Rakuten", "EPG Italia"):
                         raise
                     print(f"  Avviso: guida Rakuten non disponibile: {exc}")
                     src_data[name] = ({}, {})
@@ -160,7 +255,16 @@ def build(playlist: Path, out: Path, report: Path, overrides: list[tuple[str, Pa
             required_ids = set(selected)
             if name == "EPGshare Rakuten":
                 required_ids.update(RAKUTEN_ALIASES.values())
-            channels, programmes = parse_xmltv(local, required_ids)
+            try:
+                if name == "EPG Italia":
+                    channels, programmes = parse_epgitalia_two(local, required_ids)
+                else:
+                    channels, programmes = parse_xmltv(local, required_ids)
+            except Exception as exc:
+                if name != "EPG Italia":
+                    raise
+                print(f"  Avviso: impossibile leggere EPG Italia: {exc}")
+                channels, programmes = {}, {}
             print(f"  ID presenti: {len(channels)}; palinsesti per {len(programmes)} ID")
             src_data[name] = (channels, programmes)
 
