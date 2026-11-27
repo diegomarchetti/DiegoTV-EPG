@@ -1,95 +1,95 @@
 ﻿Canale;tvg-id;Stato;Fonte scelta;Programmi
 Rai 1;rai-1;OK;TvIt;38
-Rai 2;rai-2;OK;TvIt;43
-Rai 3;rai-3;OK;TvIt;43
-Rete 4;Rete.4.it;OK;EPGshare Italia;90
-Canale 5;Canale.5.it;OK;EPGshare Italia;134
-Italia 1;Italia.1.it;OK;EPGshare Italia;126
-LA7;LA7.HD.it;OK;EPGshare Italia;130
-TV8;TV8.HD.it;OK;EPGshare Italia;102
-Nove;Nove.it;OK;EPGshare Italia;88
-20;20.it;OK;EPGshare Italia;109
+Rai 2;rai-2;OK;TvIt;48
+Rai 3;rai-3;OK;TvIt;46
+Rete 4;Rete.4.it;OK;EPGshare Italia;88
+Canale 5;Canale.5.it;OK;EPGshare Italia;131
+Italia 1;Italia.1.it;OK;EPGshare Italia;127
+LA7;LA7.HD.it;OK;EPGshare Italia;131
+TV8;TV8.HD.it;OK;EPGshare Italia;104
+Nove;Nove.it;OK;EPGshare Italia;87
+20;20.it;OK;EPGshare Italia;108
 Rai 4;rai-4;OK;TvIt;34
-Iris;Iris.it;OK;EPGshare Italia;50
-Rai Movie;rai-movie;OK;TvIt;18
-Rai Premium;rai-premium;OK;TvIt;33
-Twentyseven;twenty-seven;OK;TvIt;36
-TV2000;TV2000.it@SD;OK;EPG Italia;73
-La7 Cinema;LA7.CINEMA.it;OK;EPGshare Italia;78
-La5;la-5;OK;TvIt;35
-Real Time;Real.Time.it;OK;EPGshare Italia;101
+Iris;Iris.it;OK;EPGshare Italia;49
+Rai Movie;rai-movie;OK;TvIt;20
+Rai Premium;rai-premium;OK;TvIt;35
+Twentyseven;twenty-seven;OK;TvIt;37
+TV2000;TV2000.it@SD;EPG MANCANTE;;0
+La7 Cinema;LA7.CINEMA.it;OK;EPGshare Italia;74
+La5;la-5;OK;TvIt;34
+Real Time;Real.Time.it;OK;EPGshare Italia;100
 QVC;QVC.it;EPG MANCANTE;;0
-Food Network;Food.Network.it;OK;EPGshare Italia;159
-Cine34;Cine34.it;OK;EPGshare Italia;50
-Discovery Channel;Discovery.Channel.it;OK;EPGshare Italia;96
+Food Network;Food.Network.it;OK;EPGshare Italia;161
+Cine34;Cine34.it;OK;EPGshare Italia;52
+Discovery Channel;Discovery.Channel.it;OK;EPGshare Italia;97
 Giallo;giallo;OK;TvIt;24
-Top Crime;Top.Crime.it;OK;EPGshare Italia;108
-Italia 2;Italia.2.it;OK;EPGshare Italia;173
-DMAX;DMAX.it;OK;EPGshare Italia;100
+Top Crime;Top.Crime.it;OK;EPGshare Italia;104
+Italia 2;Italia.2.it;OK;EPGshare Italia;170
+DMAX;DMAX.it;OK;EPGshare Italia;108
 Mediaset Extra;Mediaset.Extra.it;OK;EPGshare Italia;36
-HGTV;HGTV.it;OK;EPGshare Italia;126
+HGTV;HGTV.it;OK;EPGshare Italia;118
 Discovery Turbo;DiscoveryTurbo.it@SD;EPG MANCANTE;;0
-7 Gold;7Gold.it@SD;OK;EPG Italia;62
-Andromeda Italy;60802d37ee238e0007c94e64;OK;Pluto TV Italia;20
+7 Gold;7Gold.it@SD;EPG MANCANTE;;0
+Andromeda Italy;60802d37ee238e0007c94e64;OK;Pluto TV Italia;21
 CG Entertainment;CGEntertainment.it@SD;EPG MANCANTE;;0
-Comedy Central;Comedy.Central.it;OK;EPGshare Italia;234
+Comedy Central;Comedy.Central.it;OK;EPGshare Italia;233
 FailArmy Italy;FailArmy.us@Italy;OK;EPGshare Rakuten;183
 Gambero Rosso Channel;6971fc07c945e6e4e5bc46bf;OK;Pluto TV Italia;34
 Il Banco dei Pugni;60e4507a06171800072339a3;OK;Pluto TV Italia;41
 Il Testimone;61fbd3f0733df400076c9a2d;OK;Pluto TV Italia;27
-Pluto TV Alberto Sordi;661f8f01801af800083d9d81;OK;Pluto TV Italia;9
+Pluto TV Alberto Sordi;661f8f01801af800083d9d81;OK;Pluto TV Italia;10
 Pluto TV Christmas tutto l'anno;612e05b885183d0007958101;OK;Pluto TV Italia;11
 Pluto TV Cinema Italiano;608aa7d8359b270007861489;OK;Pluto TV Italia;10
-Pluto TV Cinema Orientale;6786235bd648bf0008c2780a;OK;Pluto TV Italia;12
-Pluto TV Cucina;608aa718a8ec810007d87fee;OK;Pluto TV Italia;39
+Pluto TV Cinema Orientale;6786235bd648bf0008c2780a;OK;Pluto TV Italia;9
+Pluto TV Cucina;608aa718a8ec810007d87fee;OK;Pluto TV Italia;23
 Pluto TV Film Azione;608aa20a2e7f270007c4878d;OK;Pluto TV Italia;10
-Pluto TV Film Romantici;608aa4a4cc92820007b663af;OK;Pluto TV Italia;9
-Pluto TV Film Storici;68750875759366af05a151ce;OK;Pluto TV Italia;9
+Pluto TV Film Romantici;608aa4a4cc92820007b663af;OK;Pluto TV Italia;11
+Pluto TV Film Storici;68750875759366af05a151ce;OK;Pluto TV Italia;8
 Pluto TV Legami Letali;64808a8c536e0c0008a276d1;OK;Pluto TV Italia;11
 Pluto TV Notti di Passione;6911c9704316999535eb21cf;OK;Pluto TV Italia;15
-Pluto TV Real Life;60801976f92a750007a0699c;OK;Pluto TV Italia;25
-Pluto TV Scherzi e risate;609404b0a8ec810007d8de9d;OK;Pluto TV Italia;34
-Pluto TV Serie Crime;608aa777b907770007e5d05d;OK;Pluto TV Italia;17
-Pluto TV Serie IT;60b9ff2722bfa400072676ef;OK;Pluto TV Italia;17
-Pluto TV Serie Sci-Fi;67ed14aaf7c5d70b9089c3bf;OK;Pluto TV Italia;21
-Pluto TV Shore;67e3b0d2443f0671bc8a1297;OK;Pluto TV Italia;31
-Pluto TV Viaggi;63c923944207be0007fd0887;OK;Pluto TV Italia;23
-Pluto TV Western IT;62e7fb67478a5b0007e6c50c;OK;Pluto TV Italia;10
-Star Trek: Voyager (Germany) IT;65cb73d33ba51e00084cabad;OK;Pluto TV Italia;17
+Pluto TV Real Life;60801976f92a750007a0699c;OK;Pluto TV Italia;28
+Pluto TV Scherzi e risate;609404b0a8ec810007d8de9d;OK;Pluto TV Italia;33
+Pluto TV Serie Crime;608aa777b907770007e5d05d;OK;Pluto TV Italia;18
+Pluto TV Serie IT;60b9ff2722bfa400072676ef;OK;Pluto TV Italia;18
+Pluto TV Serie Sci-Fi;67ed14aaf7c5d70b9089c3bf;OK;Pluto TV Italia;20
+Pluto TV Shore;67e3b0d2443f0671bc8a1297;OK;Pluto TV Italia;27
+Pluto TV Viaggi;63c923944207be0007fd0887;OK;Pluto TV Italia;30
+Pluto TV Western IT;62e7fb67478a5b0007e6c50c;OK;Pluto TV Italia;11
+Star Trek: Voyager (Germany) IT;65cb73d33ba51e00084cabad;OK;Pluto TV Italia;18
 Super TV;SuperTV.it@SD;EPG MANCANTE;;0
-Rai 5;rai-5;OK;TvIt;40
-Rai Storia;RaiStoria.it;OK;EPGshare Italia;159
-Italiana;italiana;OK;TvIt;47
+Rai 5;rai-5;OK;TvIt;41
+Rai Storia;RaiStoria.it;OK;EPGshare Italia;160
+Italiana;italiana;OK;TvIt;48
 Caccia e Pesca;CacciaePesca.it@SD;EPG MANCANTE;;0
 Italian Fishing TV;ItalianFishingTV.it@SD;EPG MANCANTE;;0
 Love The Planet IT;LoveThePlanet.es@IT;EPG MANCANTE;;0
 Pluto TV Documentari;608aa8a5709d6b0007b132fe;OK;Pluto TV Italia;16
-Pluto TV Natura;60802b37709d6b0007b0c549;OK;Pluto TV Italia;30
-Pluto TV Storia;65253fdf3fd33c00080214a3;OK;Pluto TV Italia;18
+Pluto TV Natura;60802b37709d6b0007b0c549;OK;Pluto TV Italia;31
+Pluto TV Storia;65253fdf3fd33c00080214a3;OK;Pluto TV Italia;16
 Storie Criminali;66177d18c8311c0008d077d0;OK;Pluto TV Italia;6
-Boing;Boing.it;OK;EPGshare Italia;373
-Rai Gulp;RaiGulp.it;OK;EPGshare Italia;370
+Boing;Boing.it;OK;EPGshare Italia;370
+Rai Gulp;RaiGulp.it;OK;EPGshare Italia;366
 Rai Yoyo;rai-yoyo;OK;TvIt;214
 Boing Plus;BoingPlus.it@SD;EPG MANCANTE;;0
-Cartoonito;Cartoonito.it;OK;EPGshare Italia;496
-Super!;Super!.it;OK;EPGshare Italia;219
+Cartoonito;Cartoonito.it;OK;EPGshare Italia;495
+Super!;Super!.it;OK;EPGshare Italia;217
 Iunior TV;IuniorTV.it@SD;EPG MANCANTE;;0
-Nick Jr.;Nick.Jr.it;OK;EPGshare Italia;186
+Nick Jr.;Nick.Jr.it;OK;EPGshare Italia;217
 Rakuten TV Family Movies Italy;RakutenTVFamilyMovies.es@Italy;EPG MANCANTE;;0
 The Pet Collective Italy;ThePetCollective.us@Italy;OK;EPGshare Rakuten;184
-Rai News 24;rainews24;OK;TvIt;85
-TGCom24;tgcom24;OK;TvIt;62
+Rai News 24;rainews24;OK;TvIt;86
+TGCom24;tgcom24;OK;TvIt;61
 Camera dei Deputati;CameradeiDeputati.it@SD;EPG MANCANTE;;0
-Class CNBC;Class.CNBC.it;OK;EPGshare Italia;68
+Class CNBC;Class.CNBC.it;OK;EPGshare Italia;53
 L'altro Corriere TV;LaltroCorriereTV.it@SD;EPG MANCANTE;;0
 Senato TV;SenatoTV.it@SD;EPG MANCANTE;;0
-Rai Sport;RaiSport.it;OK;EPGshare Italia;76
-ACI Sport TV;ACI.Sport.Tv.it;OK;EPGshare Italia;83
-Eurosport 1 Italy;Eurosport.Italia.it;OK;EPGshare Italia;90
-Eurosport 2 Italy;Eurosport.2.Italia.it;OK;EPGshare Italia;90
-FIFA+ Italy;FIFAPlus.uk@Italy;OK;EPGshare Rakuten;51
-RTL 102.5 TV;RTL.102.5.HD.it;OK;EPGshare Italia;43
-Deejay TV;Deejay.TV.it;OK;EPGshare Italia;43
+Rai Sport;RaiSport.it;OK;EPGshare Italia;79
+ACI Sport TV;ACI.Sport.Tv.it;OK;EPGshare Italia;93
+Eurosport 1 Italy;Eurosport.Italia.it;OK;EPGshare Italia;88
+Eurosport 2 Italy;Eurosport.2.Italia.it;OK;EPGshare Italia;85
+FIFA+ Italy;FIFAPlus.uk@Italy;OK;EPGshare Rakuten;54
+RTL 102.5 TV;RTL.102.5.HD.it;OK;EPGshare Italia;42
+Deejay TV;Deejay.TV.it;OK;EPGshare Italia;39
 Kiss Kiss TV;KissKissTV.it@SD;EPG MANCANTE;;0
 RTL 102.5 Caliente;RTL1025Caliente.it@SD;EPG MANCANTE;;0
 RDS Social TV;RDSSocialTV.it@SD;EPG MANCANTE;;0
